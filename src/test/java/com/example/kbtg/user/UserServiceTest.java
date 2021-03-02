@@ -6,7 +6,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -27,6 +26,7 @@ public class UserServiceTest {
 
         UserService userService = new UserService(userRepository);
         UserResponse response = userService.getInfo(1);
+
         // Assert
         assertEquals(1, response.getId());
         assertEquals("somkiat", response.getName());
