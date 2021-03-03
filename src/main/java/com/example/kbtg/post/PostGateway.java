@@ -23,11 +23,13 @@ public class PostGateway {
 
     public Optional<PostResponse> getPostById(int id) {
         String url = String.format("%s/posts/%d", postApiUrl, id);
+        System.out.println("url = "+url);
 
         try {
             return Optional.ofNullable(
                     restTemplate.getForObject(url, PostResponse.class));
         } catch (RestClientException e) {
+            e.printStackTrace();
             return Optional.empty();
         }
     }

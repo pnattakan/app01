@@ -1,12 +1,18 @@
 package com.example.kbtg.post;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -18,23 +24,18 @@ public class PostGatewayTest {
     @Test
     public void success_with_id_1() {
         Optional<PostResponse> result = postGateway.getPostById(1);
-        System.out.println(result.get().getId());
-        System.out.println(result.get().getBody());
         assertTrue(result.isPresent());
-
-/*
-        assertEquals(11, result.get().getId());
-        assertEquals(11, result.get().getUserId());
-        assertEquals("Test Title", result.get().getTitle());
-        assertEquals("Test Body", result.get().getBody());
-*/
-
-
+        PostResponse postResponse = result.get();
+        assertEquals(1, postResponse.getId());
+        //https://jsonplaceholder.typicode.com/posts/1 will return this message
+        assertEquals("sunt aut facere repellat provident occaecati excepturi optio reprehenderit", postResponse.getTitle());
     }
 
     @Test
-    public void should_return_empty_when_exception_is_occured() {
-
+    @DisplayName("ทำการใช้ id ที่ไม่มีในระบบ ซึ่งต้องจัดการ data ในระบบก่อน เช่น id=200")
+    public void fail_01() {
+        Optional<PostResponse> result = postGateway.getPostById(200);
+        assertFalse(result.isPresent());
     }
 
 }
